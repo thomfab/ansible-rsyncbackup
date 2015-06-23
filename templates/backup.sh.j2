@@ -1,0 +1,46 @@
+#!/bin/bash
+
+TOPIC=backup
+
+log_message () {
+	if which logger > /dev/null; then
+		LEVEL=$1
+		shift
+		logger -p user.$LEVEL -t $TOPIC "$@"
+	fi
+}
+
+log_info () {
+	log_message "info" "$@"
+}
+
+log_warning () {
+	log_message "warn" "$@"
+}
+
+log_error () {
+	log_message "err" "$@"
+}
+
+LOGFILE="$0"
+TMPLOG="/tmp/${LOGFILE##*/}.log"
+
+log_info "Backup start"
+log_info "parameters: $@"
+
+
+IFS=","
+while read filetosync
+do
+	log_info "Processing: $filetosync"
+	if [ -d $filetosync ]; then
+		log_info "Processing folder $filetosync"
+		/usr/bin/rsync -rlptDv --delete --delete-after --progress $filetosync {{ rsyncbackup_remoteuser }}@{{ rsyncbackup_server }}::{{ rsyncbackup_remotefolder }}/$HOSTNAME/ > $TMPLOG 2>&1
+		log_info < $TMPLOG
+	else
+		log_info "Processing file $filetosync"
+		/usr/bin/rsync -lptDv --delete --delete-after --progress $filetosync {{ rsyncbackup_remoteuser }}@{{ rsyncbackup_server }}::{{ rsyncbackup_remotefolder }}/$HOSTNAME/ > $TMPLOG 2>&1
+		log_info < $TMPLOG
+	fi
+done < {{ rsyncbackup_conf }}
+log_info "Backup end"

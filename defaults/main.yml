@@ -1,0 +1,16 @@
+---
+# defaults file for ansible-rsyncbackup
+
+# rsync server
+rsyncbackup_server: "myrsyncserver"
+# remote user on the rsync server
+rsyncbackup_remoteuser: "rsync"
+# remote folder on the rsync server
+rsyncbackup_remotefolder: "backup"
+# local user used to run the backup script
+rsyncbackup_localuser: "root"
+# hour and minute for the cron job to run the backup script
+rsyncbackup_hour: 10
+rsyncbackup_min: 0
+# conf file where files or folder to backup are added (one per line)
+rsyncbackup_conf: "/etc/backup.conf"
