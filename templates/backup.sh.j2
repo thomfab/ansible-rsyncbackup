@@ -39,7 +39,7 @@ do
 		log_info < $TMPLOG
 	else
 		log_info "Processing file $filetosync"
-		/usr/bin/rsync -lptDv --delete --delete-after --progress $filetosync {{ rsyncbackup_remoteuser }}@{{ rsyncbackup_server }}::{{ rsyncbackup_remotefolder }}/$HOSTNAME/ > $TMPLOG 2>&1
+		/usr/bin/rsync -rlptDv --delete --delete-after --progress $filetosync {{ rsyncbackup_remoteuser }}@{{ rsyncbackup_server }}::{{ rsyncbackup_remotefolder }}/$HOSTNAME/ > $TMPLOG 2>&1
 		log_info < $TMPLOG
 	fi
 done < {{ rsyncbackup_conf }}

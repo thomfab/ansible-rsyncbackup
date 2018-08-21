@@ -4,18 +4,39 @@
 # Configure a script to backup folders to a rsync server
 # list of folders to backup should be added to {{ rsyncbackup_conf }}
 
-- name: thomfab/rsyncbackup | create conf file
-  sudo: yes
-  file: dest={{ rsyncbackup_conf }} owner={{ rsyncbackup_localuser }} group={{ rsyncbackup_localuser }} mode=0644 state=touch
+- name: create configuration file
+  become: yes
+  template:
+    src: backup.conf.j2
+    dest: "{{ rsyncbackup_conf }}"
+    owner: "{{ rsyncbackup_localuser }}"
+    group: "{{ rsyncbackup_localuser }}"
+    mode: 0644
 
-- name: thomfab/rsyncbackup | create log file
-  sudo: yes
-  file: dest=/var/log/backup.log owner={{ rsyncbackup_localuser }} group={{ rsyncbackup_localuser }} mode=0664 state=touch
+- name: create log file
+  become: yes
+  file:
+    dest: /var/log/backup.log
+    owner: "{{ rsyncbackup_localuser }}"
+    group: "{{ rsyncbackup_localuser }}"
+    mode: 0664
+    state: touch
 
-- name: thomfab/rsyncbackup | upload backup script
-  sudo: yes
-  template: src=backup.sh.j2 dest=/usr/bin/backup.sh owner={{ rsyncbackup_localuser }} group={{ rsyncbackup_localuser }} mode=0755
+- name: upload backup script
+  become: yes
+  template:
+    src: backup.sh.j2
+    dest: /usr/bin/backup.sh
+    owner: "{{ rsyncbackup_localuser }}"
+    group: "{{ rsyncbackup_localuser }}"
+    mode: 0755
 
-- name: thomfab/rsyncbackup | create backup cron job
-  sudo: yes
-  cron: name="Backup" user="{{ rsyncbackup_localuser }}" hour="{{ rsyncbackup_hour }}" minute="{{ rsyncbackup_min }}" job="/usr/bin/backup.sh" state=present
+- name: create backup cron job
+  become: yes
+  cron:
+    name: "Backup"
+    user: "{{ rsyncbackup_localuser }}"
+    hour: "{{ rsyncbackup_hour }}"
+    minute: "{{ rsyncbackup_min }}"
+    job: "/usr/bin/backup.sh"
+    state: present

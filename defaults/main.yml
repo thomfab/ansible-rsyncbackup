@@ -14,3 +14,7 @@ rsyncbackup_hour: 10
 rsyncbackup_min: 0
 # conf file where files or folder to backup are added (one per line)
 rsyncbackup_conf: "/etc/backup.conf"
+# folders to backup
+rsyncbackup_folders:
+  - "/etc"
+  - "/var/log"
