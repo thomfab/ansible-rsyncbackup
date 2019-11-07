@@ -10,7 +10,6 @@ Several variables can be set up.
 
 Information about the server :
   rsyncbackup_server: the remote rsync server to use
-  rsyncbackup_remoteuser: the rsync user
   rsyncbackup_remotefolder: the name of the rsync folder
 
 Information local to the computer being backed up :
@@ -29,7 +28,6 @@ Example :
       roles:
         - role: thomfab.ansible-byobu
           rsyncbackup_server: "myrsyncserver"
-          rsyncbackup_remoteuser: "rsync"
           rsyncbackup_remotefolder: "backup"
           rsyncbackup_localuser: "root"
           rsyncbackup_hour: 10

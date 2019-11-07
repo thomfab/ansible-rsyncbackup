@@ -4,8 +4,6 @@
 # rsync server
 rsyncbackup_server: "myrsyncserver"
 # remote user on the rsync server
-rsyncbackup_remoteuser: "rsync"
-# remote folder on the rsync server
 rsyncbackup_remotefolder: "backup"
 # local user used to run the backup script
 rsyncbackup_localuser: "root"
